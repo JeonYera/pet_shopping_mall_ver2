@@ -12,6 +12,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.shop.app.pet.dto.PetCreateDto;
 import com.shop.app.pet.dto.PetUpdateDto;
 import com.shop.app.pet.entity.Pet;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ReviewDetailDto;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Result;
@@ -63,6 +64,7 @@ public interface PetRepository {
     @Results({
         @Result(property = "reviewId", column = "review_id"),
         @Result(property = "reviewMemberId", column = "review_member_id"),
+        @Result(property = "productId", column = "product_id"),   
         @Result(property = "petId", column = "pet_id"),
         @Result(property = "memberId", column = "member_id"),
         @Result(property = "petName", column = "pet_name"),
@@ -71,8 +73,5 @@ public interface PetRepository {
         @Result(property = "petWeight", column = "pet_weight"),
         @Result(property = "petGender", column = "pet_gender"),
         @Result(property = "petKind", column = "pet_kind")})
-	List<ReviewDetailDto> findReviewsAndPetsByProductId(int productId);
-
-    @Select("select r.*, p.* from review r left join pet p on r.review_member_id = p.member_id where r.product_id = #{productId}")
-	List<Pet> findPetsByReviewId(int reviewId);
+	List<ProductDetailPageDto> findReviewsAndPetsByProductId(int productId);
 }

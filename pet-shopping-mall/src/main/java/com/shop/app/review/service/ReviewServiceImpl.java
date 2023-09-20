@@ -290,18 +290,26 @@ public class ReviewServiceImpl implements ReviewService {
     
     // 리뷰의 총 개수와 평균 별점, 상품 리뷰 조회, 이미지 조회, 펫 정보 한번에 가져오기 (예라, 성능개선)
     @Override
-    public ProductDetailPageDto findProductReviewAllAndCount(int productId) {
-    	List<ProductDetailPageDto> reviewInfoList = reviewRepository.findProductReviewAllAndCount(productId);
+    public ProductDetailPageDto findProductReviewAllAndCount(Map<String, Object> params, int productId) {
     	
-        // 리뷰 정보를 가져온 후 각 리뷰에 대한 펫 정보를 설정
-        for (ProductDetailPageDto reviewInfo : reviewInfoList) {
-            int reviewId = reviewInfo.getReviewId();
-            List<Pet> pets = petRepository.findPetsByReviewId(reviewId);
-            reviewInfo.setPets(pets); // 리뷰에 대한 펫 정보 설정
-        }
-  
+    	int limit = (int) params.get("limit");
+        int page = (int) params.get("page");
+        int offset = (page - 1) * limit;
+        RowBounds rowBounds = new RowBounds(offset, limit);
+        
+    	List<ProductDetailPageDto> reviewInfoList = reviewRepository.findProductReviewAllAndCount(rowBounds, productId);
+       
     	ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
+    	reviewPageInfo.setProductId(productId);
         reviewPageInfo.setReviews(reviewInfoList);
+        
+        // 첫 번째 totalCount 값을 가져와 설정
+        if (!reviewInfoList.isEmpty()) {
+            long totalCount = reviewInfoList.get(0).getTotalCount();
+            reviewPageInfo.setTotalCount(totalCount);
+        } else {
+            reviewPageInfo.setTotalCount(0);
+        }
     	
     	return reviewPageInfo;
     }

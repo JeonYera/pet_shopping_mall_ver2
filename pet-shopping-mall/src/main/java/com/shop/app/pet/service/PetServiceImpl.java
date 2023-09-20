@@ -77,21 +77,20 @@ public class PetServiceImpl implements PetService {
 
 	@Override
 	public Map<Integer, List<Pet>> findPetsMapByReviews(ProductDetailPageDto reviewPageInfo) {
-		
-		int productId = reviewPageInfo.getProductId(); 
-		List<ReviewDetailDto> results = petRepository.findReviewsAndPetsByProductId(productId);
-		Map<Integer, List<Pet>> reviewPetsMap = new HashMap<>();
-		
-		for (ReviewDetailDto result : results) {
+	    int productId = reviewPageInfo.getProductId();
+	    List<ProductDetailPageDto> results = petRepository.findReviewsAndPetsByProductId(productId);
+	    Map<Integer, List<Pet>> reviewPetsMap = new HashMap<>();
+
+	    for (ProductDetailPageDto result : results) {
 	        int reviewId = result.getReviewId();
 	        Pet pet = result.toPet();
 	        // map에 pet 정보 추가 (null이 아닐 경우)
 	        if (pet != null && pet.getPetName() != null) {
-	        reviewPetsMap.computeIfAbsent(reviewId, k -> new ArrayList<>()).add(pet);
+	            reviewPetsMap.computeIfAbsent(reviewId, k -> new ArrayList<>()).add(pet);
 	        }
-		}
-		return reviewPetsMap;
-		
+	    }
+	    return reviewPetsMap;
 	}
+
 
 }

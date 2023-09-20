@@ -7,6 +7,7 @@ import com.shop.app.pet.dto.PetCreateDto;
 import com.shop.app.pet.dto.PetUpdateDto;
 import com.shop.app.pet.entity.Pet;
 import com.shop.app.review.dto.ProductDetailPageDto;
+import com.shop.app.review.dto.ReviewDetailDto;
 import com.shop.app.review.entity.Review;
 
 public interface PetService {

@@ -85,7 +85,7 @@ public interface ReviewService {
 
 	void deleteReviewAndRollbackPoints(int reviewId);
 
-	ProductDetailPageDto findProductReviewAllAndCount(int productId);
+	ProductDetailPageDto findProductReviewAllAndCount(Map<String, Object> params, int productId);
 
 
 //	List<ReviewDetailDto> findProductReviewDetails(List<Review> reviews);

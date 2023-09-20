@@ -53,14 +53,18 @@
                      <img
                         src="${pageContext.request.contextPath}/resources/images/상품/star.png"
                         alt="별점" />
-                     <c:if test="${reviewPageInfo.reviewStarRate == null}">
-                        <span>0.0</span>
-                        <span>&nbsp;|&nbsp;</span>
-                     </c:if>
-                     <c:if test="${reviewPageInfo.reviewStarRate != null}">
-                        <span>${reviewPageInfo.reviewStarRate}</span>
-                        <span>&nbsp;|&nbsp;</span>
-                     </c:if>
+					<c:if test="${reviewPageInfo != null}">
+					    <c:choose>
+					        <c:when test="${empty reviewPageInfo.reviews}">
+					            <span>0.0</span>
+					        </c:when>
+					        <c:otherwise>
+					            <c:set var="firstReview" value="${reviewPageInfo.reviews[0]}"/>
+					            <span>${firstReview.avgStarRate}</span>
+					        </c:otherwise>
+					    </c:choose>
+					    <span>&nbsp;|&nbsp;</span>
+					</c:if>
                      <span><a href="#product-review-box">후기
                            ${reviewTotalCount}건</a></span>
                   </div>
@@ -194,23 +198,28 @@
            </c:if>
          <c:if test="${not empty reviewPageInfo}">
          <div class="review-avg-star">
-            <c:if test="${reviewPageInfo.reviewStarRate == null}">
-               <div>0.0</div>
-               <div>☆☆☆☆☆</div> 
-             </c:if>
-            <c:if test="${reviewPageInfo.reviewStarRate != null}">
-                <div>${reviewPageInfo.reviewStarRate}</div>
-                <div class="review-avg-star2">
-                 <c:choose>
-                     <c:when test="${reviewPageInfo.reviewStarRate >= 4.5}">★★★★★</c:when>
-                     <c:when test="${reviewPageInfo.reviewStarRate >= 3.5}">★★★★☆</c:when>
-                     <c:when test="${reviewPageInfo.reviewStarRate >= 2.5}">★★★☆☆</c:when>
-                     <c:when test="${reviewPageInfo.reviewStarRate >= 1.5}">★★☆☆☆</c:when>
-                     <c:when test="${reviewPageInfo.reviewStarRate >= 0.1}">★☆☆☆☆</c:when>
-                     <c:otherwise>☆☆☆☆☆</c:otherwise>
-                 </c:choose>
-                </div>
-            </c:if>
+			<c:if test="${reviewPageInfo != null}">
+			    <c:choose>
+			        <c:when test="${empty reviewPageInfo.reviews}">
+			            <div>0.0</div>
+			            <div>☆☆☆☆☆</div>
+			        </c:when>
+			        <c:otherwise>
+			            <c:set var="firstReview" value="${reviewPageInfo.reviews[0]}"/>
+			            <div>${firstReview.avgStarRate}</div>
+			            <div class="review-avg-star2">
+			                <c:choose>
+			                    <c:when test="${firstReview.avgStarRate >= 4.5}">★★★★★</c:when>
+			                    <c:when test="${firstReview.avgStarRate >= 3.5}">★★★★☆</c:when>
+			                    <c:when test="${firstReview.avgStarRate >= 2.5}">★★★☆☆</c:when>
+			                    <c:when test="${firstReview.avgStarRate >= 1.5}">★★☆☆☆</c:when>
+			                    <c:when test="${firstReview.avgStarRate >= 0.1}">★☆☆☆☆</c:when>
+			                    <c:otherwise>☆☆☆☆☆</c:otherwise>
+			                </c:choose>
+			            </div>
+			        </c:otherwise>
+			    </c:choose>
+			</c:if>
            </div>
            <div class="review-percent">
                <ul>
@@ -267,11 +276,11 @@
                <li>
                   <div class="review-box">
                      <div class="review-info-box">
-                        <em class="review-info-id">${reviewMemberId}&nbsp;</em>
+                        <em class="review-info-id">${review.reviewMemberId}&nbsp;</em>
                         <!-- 리뷰 작성자 -->
                         <em class="review-info-date"> <!-- 작성일 --> 
                         <fmt:parseDate
-                              value="${reviewCreatedAt}" pattern="yyyy-MM-dd'T'HH:mm"
+                              value="${review.reviewCreatedAt}" pattern="yyyy-MM-dd'T'HH:mm"
                               var="createdAt" /> <fmt:formatDate
                               value="${createdAt}" pattern="yyyy.MM.dd" 
                         />
@@ -326,32 +335,29 @@
                            <em class="review-info-content">${review.reviewContent}</em> <!-- 리뷰내용 -->
                            <span class="product-review-small-space"></span>
                           <!-- 리뷰 이미지 -->
-								<div class="gallery_wrap3" style="height: 280px; margin-left:77px; margin-right:70px; margin-bottom: 27px;" >
-									<ul class="gallery3">
-										<c:set var="imageFilenames" value="${reviewId}" />
-										<c:if test="${not empty reviewId}">
-											<c:forEach var="filename"
-												items="${reviewId}" varStatus="loop">
-												<li class="gallery_item1"><img class="indexImg"
-													alt="Review Image"
-													src="${pageContext.request.contextPath}/resources/upload/review/${filename}">
-												</li>
-											</c:forEach>
-										</c:if>
-									</ul>
+							<div class="gallery_wrap3" style="height: 280px; margin-left:77px; margin-right:70px; margin-bottom: 27px;" >
+								<ul class="gallery3">
+									<c:if test="${not empty review.attachments}">
+										<c:forEach var="attachment" items="${review.attachments}">
+											<li class="gallery_item1">
+												<img class="indexImg" alt="Review Image" src="${pageContext.request.contextPath}/resources/upload/review/${attachment.imageRenamedFilename}">
+											</li>
+										</c:forEach>
+									</c:if>
+								</ul>
+							</div>
+							<div class="button_box">
+								<div class="prev_btn">
+									<img style="margin-top:-151px"
+										src="${pageContext.request.contextPath}/resources/images/home/left-arrow.png"
+										alt="이전" />
 								</div>
-								<div class="button_box">
-									<div class="prev_btn">
-										<img style="margin-top:-151px"
-											src="${pageContext.request.contextPath}/resources/images/home/left-arrow.png"
-											alt="이전" />
-									</div>
-									<div class="next_btn">
-										<img style="margin-top:-151px; margin-left:1100px;"
-											src="${pageContext.request.contextPath}/resources/images/home/right-arrow.png"
-											alt="다음" />
-									</div>
+								<div class="next_btn">
+									<img style="margin-top:-151px; margin-left:1100px;"
+										src="${pageContext.request.contextPath}/resources/images/home/right-arrow.png"
+										alt="다음" />
 								</div>
+							</div>
                          </div>
                        </div>
                      </li>
