@@ -20,6 +20,7 @@ import com.shop.app.point.service.PointService;
 import com.shop.app.product.dto.ProductInfoDto;
 import com.shop.app.product.entity.Product;
 import com.shop.app.product.repository.ProductRepository;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ProductReviewAvgDto;
 import com.shop.app.review.dto.ReviewCreateDto;
 import com.shop.app.review.dto.ReviewDetailDto;
@@ -289,7 +290,7 @@ public class ReviewServiceImpl implements ReviewService {
     
     // 리뷰의 총 개수와 평균 별점 한번에 하기 (예라, 리팩토링)
     @Override
-    public ProductReviewAvgDto findProductReviewAllAndCount(int productId) {
+    public List<ProductDetailPageDto> findProductReviewAllAndCount(int productId) {
     	return reviewRepository.findProductReviewAllAndCount(productId);
     }
 

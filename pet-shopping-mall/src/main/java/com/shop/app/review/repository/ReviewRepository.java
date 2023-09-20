@@ -13,6 +13,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.shop.app.common.entity.ImageAttachment;
 import com.shop.app.product.dto.ProductInfoDto;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ProductReviewAvgDto;
 import com.shop.app.review.dto.ReviewDetailDto;
 import com.shop.app.review.dto.ReviewListDto;
@@ -106,7 +107,7 @@ public interface ReviewRepository {
 	ReviewDetails findProductImageAttachmentsByReviewId2(@Param("reviewId")int reviewId2, @Param("orderId")int orderId);
 //	ReviewDetails findProductImageAttachmentsByReviewId2(int reviewId2);
 
-	ProductReviewAvgDto findProductReviewAllAndCount(int productId);
+	List<ProductDetailPageDto> findProductReviewAllAndCount(int productId);
 
 	
 	

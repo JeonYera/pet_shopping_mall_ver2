@@ -49,6 +49,7 @@ import com.shop.app.product.entity.ProductCategory;
 import com.shop.app.product.entity.ProductDetail;
 import com.shop.app.product.entity.ProductImages;
 import com.shop.app.product.service.ProductService;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ProductReviewAvgDto;
 import com.shop.app.review.entity.Review;
 import com.shop.app.review.entity.ReviewDetails;
@@ -93,17 +94,18 @@ public class ProductController {
 
 		Map<String, Object> params = Map.of("page", page, "limit", limit, "productId", productId);
 
-		// 리뷰의 총 개수와 평균 별점 한번에 하기 (예라, 성능개선)
-		ProductReviewAvgDto reviewPageInfo = reviewService.findProductReviewAllAndCount(productId);
+		// 리뷰의 총 개수와 평균 별점, 상품 리뷰 조회, 이미지 조회 한번에 하기 (예라, 성능개선)
+		List<ProductDetailPageDto> reviewInfoList = reviewService.findProductReviewAllAndCount(productId);
+		
+		// 리뷰 정보를 ProductDetailPageDto 객체에 설정
+	    ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
+	    reviewPageInfo.setReviews(reviewInfoList);
+
 		model.addAttribute("reviewPageInfo", reviewPageInfo);
 		
 		long totalCount = reviewPageInfo.getTotalCount();
 		int totalPages = (int) Math.ceil((double) totalCount / limit);
 		model.addAttribute("totalPages", totalPages);
-
-		// 상품Id에 대한 모든 리뷰 가져오기 (이혜령)
-		List<Review> reviews = reviewService.findProductReviewAll(params, productId);
-		model.addAttribute("reviews", reviews);
 
 		// 리뷰 평균 별점에 대한 퍼센트 구하기 (이혜령)
 		List<Review> allReviews = reviewService.findProductReviewAllNoPageBar(productId);
@@ -158,27 +160,7 @@ public class ProductController {
 		model.addAttribute("productDetails", productDetails); 
 
 		// 상품 상세 페이지 리뷰 - 펫 정보 (예라, 성능개선)
-		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviews);
-		log.debug("reviewPetsMap = {}", reviewPetsMap);
-		model.addAttribute("reviewPetsMap", reviewPetsMap); 
-
-		// 상품 상세 페이지 리뷰 - 이미지 파일 (이혜령)
-		Map<Integer, List<String>> reviewImageMap = new HashMap<>();
-		for (Review review : reviews) {
-			int reviewId2 = review.getReviewId();
-			ReviewDetails reviewDetails = reviewService.findProductImageAttachmentsByReviewId(reviewId2);
-
-			if (reviewDetails.getAttachments() != null && !reviewDetails.getAttachments().isEmpty()) {
-				List<String> imageFilenames = new ArrayList<>();
-
-				for (ImageAttachment attachment : reviewDetails.getAttachments()) {
-					imageFilenames.add(attachment.getImageRenamedFilename());
-				}
-				reviewImageMap.put(reviewId2, imageFilenames);
-			}
-		}
-
-		model.addAttribute("reviewImageMap", reviewImageMap);
+		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
 		model.addAttribute("reviewPetsMap", reviewPetsMap); 
 		
 		// 상품 상세 페이지 리뷰 - 리뷰 전체개수 확인 (이혜령)

@@ -189,10 +189,10 @@
    </div>
    <div class="review-div">
       <ul class="review-product-utility">
-         <c:if test="${empty reviews}"> 
+         <c:if test="${empty reviewPageInfo}"> 
            작성된 리뷰가 없습니다. 
            </c:if>
-         <c:if test="${not empty reviews}">
+         <c:if test="${not empty reviewPageInfo}">
          <div class="review-avg-star">
             <c:if test="${reviewPageInfo.reviewStarRate == null}">
                <div>0.0</div>
@@ -263,7 +263,7 @@
          </div>                  
          <br><br>
          <div class="review-dividing-line"></div> <!-- 리뷰 시작 구분선 -->      
-            <c:forEach items="${reviews}" var="review" varStatus="vs">
+            <c:forEach items="${reviewPageInfo.reviews}" var="review" varStatus="vs">
                <li>
                   <div class="review-box">
                      <div class="review-info-box">
@@ -328,11 +328,10 @@
                           <!-- 리뷰 이미지 -->
 								<div class="gallery_wrap3" style="height: 280px; margin-left:77px; margin-right:70px; margin-bottom: 27px;" >
 									<ul class="gallery3">
-										<c:set var="imageFilenames"
-											value="${reviewImageMap[review.reviewId]}" />
-										<c:if test="${not empty reviewImageMap[review.reviewId]}">
+										<c:set var="imageFilenames" value="${reviewId}" />
+										<c:if test="${not empty reviewId}">
 											<c:forEach var="filename"
-												items="${reviewImageMap[review.reviewId]}" varStatus="loop">
+												items="${reviewId}" varStatus="loop">
 												<li class="gallery_item1"><img class="indexImg"
 													alt="Review Image"
 													src="${pageContext.request.contextPath}/resources/upload/review/${filename}">

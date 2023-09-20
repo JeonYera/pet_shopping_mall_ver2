@@ -116,18 +116,27 @@
 	</select>
 	
 	<select id="findProductReviewAllAndCount" resultMap="productReviewAvgDto">
-	select 
-	    p.product_id, 
-	    count(*),
-	    round(avg(r.review_star_rate), 1) as avg
-	from 
-	    product p
-	join 
-	    review r on p.product_id = r.product_id
-	where 
-	    p.product_id = #{productId}
-	group by 
-	    p.product_id, p.product_name
+	SELECT
+	    r.review_id,
+	    r.review_member_id,
+	    r.review_title,
+	    r.review_content,
+	    r.review_star_rate,
+	    ia.image_original_filename,
+	    ia.image_renamed_filename,
+	    p.product_id,
+	    (SELECT COUNT(*) FROM review WHERE product_id = p.product_id) AS review_count,
+	    (SELECT ROUND(AVG(review_star_rate), 1) FROM review WHERE product_id = p.product_id) AS avg_star_rate
+	FROM
+	    review r
+	LEFT JOIN
+	    image_attachment_mapping iam ON r.review_id = iam.ref_id AND iam.ref_table = 'review'
+	LEFT JOIN
+	    image_attachment ia ON iam.image_id = ia.image_id
+	LEFT JOIN
+	    product p ON p.product_id = r.product_id
+	WHERE
+	     p.product_id = #{productId}
 	</select>
 	
 <resultMap type="ProductReviewAvgDto" id="productReviewAvgDto">

@@ -1,6 +1,6 @@
 package com.shop.app.review.dto;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,19 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductReviewAvgDto {
+public class ProductDetailPageDto {
 	
 	private String productName; // product
 	private int productId; // product
 	private long totalCount;
 	private double reviewStarRate; // review
-	private String reviewMemberId;
-	private LocalDateTime reviewCreatedAt;
+	private List<ProductDetailPageDto> reviews;
 	private int reviewId;
-	private String reviewTitle;
-	private String reviewContent;
 	
 	public long getTotalCount() {
 		return totalCount;
 	}
+
 }

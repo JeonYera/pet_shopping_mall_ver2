@@ -13,6 +13,7 @@ import com.shop.app.pet.dto.PetCreateDto;
 import com.shop.app.pet.dto.PetUpdateDto;
 import com.shop.app.pet.entity.Pet;
 import com.shop.app.pet.repository.PetRepository;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ReviewDetailDto;
 import com.shop.app.review.entity.Review;
 import com.shop.app.servicecenter.inquiry.entity.Question;
@@ -75,9 +76,9 @@ public class PetServiceImpl implements PetService {
 //	}
 
 	@Override
-	public Map<Integer, List<Pet>> findPetsMapByReviews(List<Review> reviews) {
+	public Map<Integer, List<Pet>> findPetsMapByReviews(ProductDetailPageDto reviewPageInfo) {
 		
-		int productId = reviews.get(0).getProductId(); 
+		int productId = reviewPageInfo.getProductId(); 
 		List<ReviewDetailDto> results = petRepository.findReviewsAndPetsByProductId(productId);
 		Map<Integer, List<Pet>> reviewPetsMap = new HashMap<>();
 		

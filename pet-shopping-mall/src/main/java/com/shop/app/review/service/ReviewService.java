@@ -7,8 +7,8 @@ import javax.validation.Valid;
 
 import com.shop.app.common.entity.ImageAttachment;
 import com.shop.app.pet.entity.Pet;
-import com.shop.app.product.controller.ReviewPageInfo;
 import com.shop.app.product.dto.ProductInfoDto;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ProductReviewAvgDto;
 import com.shop.app.review.dto.ReviewCreateDto;
 import com.shop.app.review.dto.ReviewDetailDto;
@@ -85,7 +85,7 @@ public interface ReviewService {
 
 	void deleteReviewAndRollbackPoints(int reviewId);
 
-	ProductReviewAvgDto findProductReviewAllAndCount(int productId);
+	List<ProductDetailPageDto> findProductReviewAllAndCount(int productId);
 
 
 //	List<ReviewDetailDto> findProductReviewDetails(List<Review> reviews);

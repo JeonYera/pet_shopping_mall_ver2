@@ -6,6 +6,7 @@ import java.util.Map;
 import com.shop.app.pet.dto.PetCreateDto;
 import com.shop.app.pet.dto.PetUpdateDto;
 import com.shop.app.pet.entity.Pet;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.entity.Review;
 
 public interface PetService {
@@ -27,7 +28,7 @@ public interface PetService {
 
 //	List<Pet> findReviewPetByMemberId(String reviewMemberId);
 
-	Map<Integer, List<Pet>> findPetsMapByReviews(List<Review> reviews);
+	Map<Integer, List<Pet>> findPetsMapByReviews(ProductDetailPageDto reviewPageInfo);
 
 
 	
