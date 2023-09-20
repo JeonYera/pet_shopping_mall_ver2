@@ -72,4 +72,7 @@ public interface PetRepository {
         @Result(property = "petGender", column = "pet_gender"),
         @Result(property = "petKind", column = "pet_kind")})
 	List<ReviewDetailDto> findReviewsAndPetsByProductId(int productId);
+
+    @Select("select r.*, p.* from review r left join pet p on r.review_member_id = p.member_id where r.product_id = #{productId}")
+	List<Pet> findPetsByReviewId(int reviewId);
 }

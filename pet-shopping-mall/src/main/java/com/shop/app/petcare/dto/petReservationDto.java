@@ -4,12 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotBlank;
 
-import com.shop.app.pet.entity.Pet;
 import com.shop.app.pet.entity.PetGender;
-import com.shop.app.petcare.entity.Petcare;
-import com.shop.app.review.dto.ProductReviewAvgDto;
-import com.shop.app.review.entity.Review;
-import com.shop.app.review.entity.ReviewDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

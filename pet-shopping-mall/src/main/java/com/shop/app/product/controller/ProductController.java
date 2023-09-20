@@ -94,18 +94,13 @@ public class ProductController {
 
 		Map<String, Object> params = Map.of("page", page, "limit", limit, "productId", productId);
 
-		// 리뷰의 총 개수와 평균 별점, 상품 리뷰 조회, 이미지 조회 한번에 하기 (예라, 성능개선)
-		List<ProductDetailPageDto> reviewInfoList = reviewService.findProductReviewAllAndCount(productId);
-		
-		// 리뷰 정보를 ProductDetailPageDto 객체에 설정
-	    ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
-	    reviewPageInfo.setReviews(reviewInfoList);
+		// 리뷰의 총 개수와 평균 별점, 상품 리뷰 조회, 이미지 조회, 펫 정보 한번에 가져오기 (예라, 성능개선)
+	    ProductDetailPageDto reviewPageInfo = reviewService.findProductReviewAllAndCount(productId);
+	    model.addAttribute("reviewPageInfo", reviewPageInfo);
 
-		model.addAttribute("reviewPageInfo", reviewPageInfo);
-		
-		long totalCount = reviewPageInfo.getTotalCount();
-		int totalPages = (int) Math.ceil((double) totalCount / limit);
-		model.addAttribute("totalPages", totalPages);
+	    long totalCount = reviewPageInfo.getTotalCount();
+	    int totalPages = (int) Math.ceil((double) totalCount / limit);
+	    model.addAttribute("totalPages", totalPages);
 
 		// 리뷰 평균 별점에 대한 퍼센트 구하기 (이혜령)
 		List<Review> allReviews = reviewService.findProductReviewAllNoPageBar(productId);
@@ -158,10 +153,6 @@ public class ProductController {
 		model.addAttribute("thumbnailImages", thumbnailImages);
 		model.addAttribute("detailImages", detailImages); 
 		model.addAttribute("productDetails", productDetails); 
-
-		// 상품 상세 페이지 리뷰 - 펫 정보 (예라, 성능개선)
-		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
-		model.addAttribute("reviewPetsMap", reviewPetsMap); 
 		
 		// 상품 상세 페이지 리뷰 - 리뷰 전체개수 확인 (이혜령)
 		int reveiwTotalCount = reviewService.findReviewTotalCount(productId);

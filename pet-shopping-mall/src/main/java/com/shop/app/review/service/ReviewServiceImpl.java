@@ -288,10 +288,22 @@ public class ReviewServiceImpl implements ReviewService {
         int result = this.reviewDelete(reviewId);
     }
     
-    // 리뷰의 총 개수와 평균 별점 한번에 하기 (예라, 리팩토링)
+    // 리뷰의 총 개수와 평균 별점, 상품 리뷰 조회, 이미지 조회, 펫 정보 한번에 가져오기 (예라, 성능개선)
     @Override
-    public List<ProductDetailPageDto> findProductReviewAllAndCount(int productId) {
-    	return reviewRepository.findProductReviewAllAndCount(productId);
+    public ProductDetailPageDto findProductReviewAllAndCount(int productId) {
+    	List<ProductDetailPageDto> reviewInfoList = reviewRepository.findProductReviewAllAndCount(productId);
+    	
+        // 리뷰 정보를 가져온 후 각 리뷰에 대한 펫 정보를 설정
+        for (ProductDetailPageDto reviewInfo : reviewInfoList) {
+            int reviewId = reviewInfo.getReviewId();
+            List<Pet> pets = petRepository.findPetsByReviewId(reviewId);
+            reviewInfo.setPets(pets); // 리뷰에 대한 펫 정보 설정
+        }
+  
+    	ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
+        reviewPageInfo.setReviews(reviewInfoList);
+    	
+    	return reviewPageInfo;
     }
 
 

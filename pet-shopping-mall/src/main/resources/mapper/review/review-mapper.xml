@@ -115,13 +115,9 @@
 	    p.product_id, p.product_name
 	</select>
 	
-	<select id="findProductReviewAllAndCount" resultMap="productReviewAvgDto">
+	<select id="findProductReviewAllAndCount" resultMap="ProductDetailPageDto">
 	SELECT
-	    r.review_id,
-	    r.review_member_id,
-	    r.review_title,
-	    r.review_content,
-	    r.review_star_rate,
+	    r.*,
 	    ia.image_original_filename,
 	    ia.image_renamed_filename,
 	    p.product_id,
@@ -139,11 +135,32 @@
 	     p.product_id = #{productId}
 	</select>
 	
-<resultMap type="ProductReviewAvgDto" id="productReviewAvgDto">
-    <result column="product_id" property="productId" />
-    <result column="product_name" property="productName" />
-    <result column="avg" property="reviewStarRate" />
-</resultMap>
+	<resultMap type="ProductDetailPageDto" id="ProductDetailPageDto">
+	    <result column="product_name" property="productName" />
+	    <result column="product_id" property="productId" />
+	    <result column="total_count" property="totalCount" />
+	    <result column="review_star_rate" property="reviewStarRate" />
+	    <result column="review_id" property="reviewId" />
+	
+	    <!-- pets 필드와 관련된 매핑 -->
+	    <result column="pet_id" property="petId" />
+	    <result column="member_id" property="memberId" />
+	    <result column="pet_name" property="petName" />
+	    <result column="pet_age" property="petAge" />
+	    <result column="pet_kind" property="petKind" />
+	    <result column="pet_breed" property="petBreed" />
+	    <result column="pet_weight" property="petWeight" />
+	    <result column="pet_gender" property="petGender" />
+	</resultMap>
+	
+	
+	<resultMap type="ProductReviewAvgDto" id="productReviewAvgDto">
+	    <result column="product_id" property="productId" />
+	    <result column="product_name" property="productName" />
+	    <result column="avg" property="reviewStarRate" />
+	</resultMap>
+
+
 	
 	<select id="findReviewAll" resultType="ReviewListDto">
     SELECT 

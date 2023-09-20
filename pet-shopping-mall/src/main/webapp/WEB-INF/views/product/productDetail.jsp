@@ -267,11 +267,11 @@
                <li>
                   <div class="review-box">
                      <div class="review-info-box">
-                        <em class="review-info-id">${review.reviewMemberId}&nbsp;</em>
+                        <em class="review-info-id">${reviewMemberId}&nbsp;</em>
                         <!-- 리뷰 작성자 -->
                         <em class="review-info-date"> <!-- 작성일 --> 
                         <fmt:parseDate
-                              value="${review.reviewCreatedAt}" pattern="yyyy-MM-dd'T'HH:mm"
+                              value="${reviewCreatedAt}" pattern="yyyy-MM-dd'T'HH:mm"
                               var="createdAt" /> <fmt:formatDate
                               value="${createdAt}" pattern="yyyy.MM.dd" 
                         />
