@@ -298,8 +298,7 @@ public class ReviewServiceImpl implements ReviewService {
         RowBounds rowBounds = new RowBounds(offset, limit);
         
     	List<ProductDetailPageDto> reviewInfoList = reviewRepository.findProductReviewAllAndCount(rowBounds, productId);
-    	log.debug("reviewInfoList size = {}", reviewInfoList.size());
-    	
+        
     	ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
     	reviewPageInfo.setProductId(productId);
         reviewPageInfo.setReviews(reviewInfoList);
@@ -312,7 +311,6 @@ public class ReviewServiceImpl implements ReviewService {
             reviewPageInfo.setTotalCount(0);
         }
     	
-        log.debug("reviewPageInfo = {}", reviewPageInfo);
     	return reviewPageInfo;
     }
 

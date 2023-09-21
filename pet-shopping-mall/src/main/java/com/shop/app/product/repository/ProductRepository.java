@@ -20,6 +20,7 @@ import com.shop.app.product.entity.Product;
 import com.shop.app.product.entity.ProductCategory;
 import com.shop.app.product.entity.ProductDetail;
 import com.shop.app.product.entity.ProductImages;
+import com.shop.app.review.dto.ProductDetailPageDto;
 
 @Mapper
 public interface ProductRepository {
@@ -83,7 +84,6 @@ public interface ProductRepository {
 	@Insert("insert into image_attachment_mapping (mapping_id, ref_table, ref_id, image_id) VALUES (seq_image_attachment_mapping_id.nextval, 'product', #{refId}, #{imageId})")
 	int insertMapping(int refId, int imageId);
 
-	@Select("select * from product_detail where product_id = #{productId}")
 	List<ProductDetail> findAllProductDetailsByProductId(int productId);
 
 	@Insert("update product_detail set option_name = #{optionName}, option_value = #{optionValue}, additional_price = #{additionalPrice} where product_detail_id = #{productDetailId}")

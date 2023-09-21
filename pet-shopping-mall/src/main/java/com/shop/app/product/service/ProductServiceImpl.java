@@ -17,6 +17,7 @@ import com.shop.app.product.entity.ProductCategory;
 import com.shop.app.product.entity.ProductDetail;
 import com.shop.app.product.entity.ProductImages;
 import com.shop.app.product.repository.ProductRepository;
+import com.shop.app.review.dto.ProductDetailPageDto;
 import com.shop.app.review.dto.ProductReviewAvgDto;
 import com.shop.app.review.repository.ReviewRepository;
 import com.shop.app.servicecenter.inquiry.entity.QuestionDetails;

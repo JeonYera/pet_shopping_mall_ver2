@@ -43,16 +43,12 @@
             </c:if>
             </div>
             <div class="product-info">
-               <!-- 상품의 이름을 표시 -->
-			    <c:if test="${not empty reviewPageInfo.reviews}">
-			        <div id="product-title">${reviewPageInfo.reviews[0].productName}</div>
-			    </c:if>
+               <div id="product-title">${product.productName}</div>
                <div class="product-assist">
-				<!-- 상품의 가격을 표시 -->
-			    <div id="price-info">
-			        <fmt:formatNumber value="${reviewPageInfo.reviews[0].productPrice}" pattern="#,###" />
-			        원
-			    </div>
+                  <div id="price-info">
+                     <fmt:formatNumber value="${product.productPrice}" pattern="#,###" />
+                     원
+                  </div>
                   <div class="product-assist">
                      <img
                         src="${pageContext.request.contextPath}/resources/images/상품/star.png"
@@ -70,7 +66,7 @@
 					    <span>&nbsp;|&nbsp;</span>
 					</c:if>
                      <span><a href="#product-review-box">후기
-                           ${reviewPageInfo.totalCount}건</a></span>
+                           ${reviewTotalCount}건</a></span>
                   </div>
                </div>
                <hr class="hr-line" />

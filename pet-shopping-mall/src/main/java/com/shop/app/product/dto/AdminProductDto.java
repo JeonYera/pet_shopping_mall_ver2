@@ -24,4 +24,7 @@ public class AdminProductDto {
 	private String thumbnail; 
 	private String categoryName; 
 	private List<ProductDetail> productOptions;
+	private String optionName;
+	private int productDetailId;
+	private int additionalPrice;
 }

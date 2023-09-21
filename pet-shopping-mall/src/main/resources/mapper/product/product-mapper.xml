@@ -4,6 +4,25 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shop.app.product.repository.ProductRepository">
 	
+	
+	<select id="findAllProductDetailsByProductId" resultMap="productOptionsMap">
+		select 
+	    	p.*, 
+	    	pd.*, 
+	    	iam.*, 
+	    	ia.*
+		from 
+			product p
+		left join 
+		    product_detail pd ON p.product_id = pd.product_id
+		left join 
+		    image_attachment_mapping iam on p.product_id = iam.ref_id and iam.ref_table = 'product'
+		left join
+		    image_attachment ia ON iam.image_id = ia.image_id
+		where 
+	    	p.product_id = #{productId}
+    </select>
+    
 	<select id="findImageAttachmentsByProductId" resultMap="productImagesResultMap">
 		select
 		    p.product_id,
@@ -199,6 +218,7 @@
 	    <result property="productPrice" column="product_price"/>
 	    <result property="thumbnail" column="thumbnail"/>
 	    <result property="categoryName" column="category_name"/>
+	    
 		<collection property="productOptions" ofType="ProductDetail">
 	        <result property="productId" column="product_id"/>
 	        <result property="productDetailId" column="product_detail_id"/>
@@ -215,7 +235,6 @@
 	    <result property="optionValue" column="option_value"/>
 	    <result property="additionalPrice" column="additional_price"/>
 	</resultMap>
-	
 	
 	<resultMap type="ProductSearchDto" id="productSearchDto">
         <result property="productId" column="product_id"/>
@@ -246,6 +265,7 @@
         <result property="imageId" column="image_id"/>
         <result property="createDate" column="create_date"/>
         <result property="likeCnt" column="like_cnt"/>
+        <result property="productDetailId" column="product_detail_id"/>
 
     <!-- image_attachment 테이블의 내용을 imageAttachment 객체에 매핑 -->
     <collection property="attachments" ofType="ImageAttachment">
