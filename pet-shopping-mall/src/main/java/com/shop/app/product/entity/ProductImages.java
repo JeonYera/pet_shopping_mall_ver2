@@ -29,8 +29,6 @@ public class ProductImages {
 	private List<ImageAttachment> attachments;
 	private List<ImageAttachmentMapping> attachmentMapping;
 	
-	private int productDetailId;
-	
 	public Product toProduct() {
 		return Product.builder()
 				.categoryId(categoryId)

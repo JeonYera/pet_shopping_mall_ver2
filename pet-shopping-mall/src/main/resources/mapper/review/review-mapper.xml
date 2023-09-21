@@ -118,8 +118,10 @@
 	<select id="findProductReviewAllAndCount" resultMap="ProductDetailPageDto">
 	select
 	    r.*,
-	    ia.*,
 	    p.*,
+	    ia.image_original_filename,
+	    ia.image_renamed_filename,
+	    p.product_id,
 	    (select count(*) from review where product_id = p.product_id) as review_count,
 	    (select round(avg(review_star_rate), 1) from review WHERE product_id = p.product_id) as avg_star_rate
 	from
@@ -136,8 +138,13 @@
 	
 	<resultMap type="ProductDetailPageDto" id="ProductDetailPageDto">
 	    <!-- 상품 -->
-	    <result column="product_id" property="productId" />
-	    <result column="product_name" property="productName" />
+        <id property="productId" column="product_id"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="productPrice" column="product_price"/>
+        <result property="imageId" column="image_id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="likeCnt" column="like_cnt"/>
 	    
 	    <!-- 리뷰 -->
 	    <result column="review_id" property="reviewId" />
@@ -161,7 +168,7 @@
 	    <result column="pet_kind" property="petKind" />
 	    
 	    <!-- 이미지 -->
-	    <collection property="attachments" ofType="com.shop.app.common.entity.ImageAttachment">
+	    <collection property="attachments" ofType="ImageAttachment">
 	        <result column="image_id" property="imageId" />
 	        <result column="image_type" property="imageType" />
 	        <result column="image_original_filename" property="imageOriginalFilename" />

@@ -96,9 +96,8 @@ public class ProductController {
 
 		// 리뷰의 총 개수, 평균 별점, 상품별 리뷰 조회, 이미지 조회, 페이징바 (예라, 성능개선)
 	    ProductDetailPageDto reviewPageInfo = reviewService.findProductReviewAllAndCount(params, productId);
-	    model.addAttribute("reviewPageInfo", reviewPageInfo);
-	    
 	    log.debug("reviewPageInfo = {}", reviewPageInfo);
+	    model.addAttribute("reviewPageInfo", reviewPageInfo);
 
 	    long totalCount = reviewPageInfo.getTotalCount();
 	    int totalPages = (int) Math.ceil((double) totalCount / limit);
@@ -132,39 +131,25 @@ public class ProductController {
 		model.addAttribute("formattedPercentages", formattedPercentages);
 
 		// 상품 아이디로 상품정보 가져오기
+		Product product = productService.findProductById(productId);
 		List<ProductDetail> productDetails = productService.findAllProductDetailsByProductId(productId);
-
-		log.debug("productDetails = {}", productDetails);
-		
-		// 썸네일이미지와 상세이미지 분리
-		
-		List<ImageAttachment> allAttachments = new ArrayList<>();
-		
-		// productDetails 리스트의 각 항목에 대해 getAttachments() 호출
-		for (ProductDetail detail : productDetails) {
-		    List<ImageAttachment> attachmentsForDetail = detail.getAttachments();
-		    if (attachmentsForDetail != null) {
-		        allAttachments.addAll(attachmentsForDetail);
-		    }
-		}
+		ProductImages productImages = productService.findImageAttachmentsByProductId(productId);
 
 		// 썸네일이미지와 상세이미지 분리
+		List<ImageAttachment> attachments = productImages.getAttachments();
 		List<ImageAttachment> thumbnailImages = new ArrayList<>();
 		List<ImageAttachment> detailImages = new ArrayList<>();
-		for (ImageAttachment attach : allAttachments) {
-		    if (attach != null && attach.getImageOriginalFilename() != null) {
-		        if (attach.getThumbnail() == Thumbnail.Y) {
-		            thumbnailImages.add(attach);
-		        } else {
-		            detailImages.add(attach);
-		        }
-		    }
+		for (ImageAttachment attach : attachments) {
+			if (attach != null && attach.getImageOriginalFilename() != null) {
+				if (attach.getThumbnail() == Thumbnail.Y) {
+					thumbnailImages.add(attach);
+				} else {
+					detailImages.add(attach);
+				}
+			}
 		}
 
-		log.debug("thumbnailImages = {}", thumbnailImages);
-		log.debug("detailImages = {}", detailImages);
-
-//		model.addAttribute("product", product);
+		model.addAttribute("product", product);
 		model.addAttribute("thumbnailImages", thumbnailImages);
 		model.addAttribute("detailImages", detailImages); 
 		model.addAttribute("productDetails", productDetails); 

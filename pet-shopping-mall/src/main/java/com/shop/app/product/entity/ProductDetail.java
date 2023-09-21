@@ -23,8 +23,4 @@ public class ProductDetail {
 	private String optionValue;
 	private int additionalPrice;
 	
-	public List<ImageAttachment> getAttachments() {
-		return null;
-	}
-	
 }
