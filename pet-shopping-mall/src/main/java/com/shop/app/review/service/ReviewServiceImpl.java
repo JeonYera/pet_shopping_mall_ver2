@@ -298,7 +298,7 @@ public class ReviewServiceImpl implements ReviewService {
         RowBounds rowBounds = new RowBounds(offset, limit);
         
     	List<ProductDetailPageDto> reviewInfoList = reviewRepository.findProductReviewAllAndCount(rowBounds, productId);
-       
+        
     	ProductDetailPageDto reviewPageInfo = new ProductDetailPageDto();
     	reviewPageInfo.setProductId(productId);
         reviewPageInfo.setReviews(reviewInfoList);

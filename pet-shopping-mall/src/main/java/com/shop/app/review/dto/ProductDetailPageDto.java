@@ -31,6 +31,11 @@ public class ProductDetailPageDto {
 				.build();
 	}
 	
+	private int productDetailId;
+	private String optionName;
+	private String optionValue;
+	private int additionalPrice;
+	
 	
 	private List<ProductDetailPageDto> reviews;
 	private int reviewId;

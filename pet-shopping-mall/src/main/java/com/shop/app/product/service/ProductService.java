@@ -12,6 +12,7 @@ import com.shop.app.product.entity.Product;
 import com.shop.app.product.entity.ProductCategory;
 import com.shop.app.product.entity.ProductDetail;
 import com.shop.app.product.entity.ProductImages;
+import com.shop.app.review.dto.ProductDetailPageDto;
 
 public interface ProductService {
 	// 수경

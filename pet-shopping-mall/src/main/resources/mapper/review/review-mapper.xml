@@ -118,9 +118,8 @@
 	<select id="findProductReviewAllAndCount" resultMap="ProductDetailPageDto">
 	select
 	    r.*,
-	    ia.image_original_filename,
-	    ia.image_renamed_filename,
-	    p.product_id,
+	    ia.*,
+	    p.*,
 	    (select count(*) from review where product_id = p.product_id) as review_count,
 	    (select round(avg(review_star_rate), 1) from review WHERE product_id = p.product_id) as avg_star_rate
 	from
@@ -168,6 +167,7 @@
 	        <result column="image_original_filename" property="imageOriginalFilename" />
 	        <result column="image_renamed_filename" property="imageRenamedFilename" />
 	        <result column="image_file_size" property="imageFileSize" />
+	        <result column="thumbnail" property="thumbnail" />
 	        <result column="image_created_at" property="imageCreatedAt" />
 	    </collection>
 	</resultMap>
