@@ -385,7 +385,7 @@
                    </c:forEach>
                  </c:if>
                </ul>
-            </div>
+             </div>
    <!-- 교환/반품/배송 -->
    <div class="util-div" id="product-notice-box" style="margin-top:1600px;"> 
       <ul class="product-utility">

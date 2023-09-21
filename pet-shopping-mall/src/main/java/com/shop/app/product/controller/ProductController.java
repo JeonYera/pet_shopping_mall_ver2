@@ -101,12 +101,15 @@ public class ProductController {
 
 	    long totalCount = reviewPageInfo.getTotalCount();
 	    int totalPages = (int) Math.ceil((double) totalCount / limit);
+	    log.debug("totalCount = {}", totalCount);
+	    log.debug("totalPages = {}", totalPages);
 	    model.addAttribute("totalPages", totalPages);
 
-	    List<ProductDetailPageDto> allReviews = reviewPageInfo.getReviews();
-	    
+		// 리뷰 평균 별점에 대한 퍼센트 구하기 (이혜령)
+		List<Review> allReviews = reviewService.findProductReviewAllNoPageBar(productId);
+
 		int[] starCounts = new int[6];
-		for (ProductDetailPageDto review : allReviews) {
+		for (Review review : allReviews) {
 			int star = review.getReviewStarRate();
 			starCounts[star]++;
 		}
@@ -156,7 +159,12 @@ public class ProductController {
 		
 		// 상품 상세 페이지 리뷰 - 펫 정보 (예라, 성능개선)
 		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
+		log.debug("reviewPetsMap = {}", reviewPetsMap);
 		model.addAttribute("reviewPetsMap", reviewPetsMap); 
+		
+		// 상품 상세 페이지 리뷰 - 리뷰 전체개수 확인 (이혜령)
+		int reveiwTotalCount = reviewService.findReviewTotalCount(productId);
+		model.addAttribute("reviewTotalCount", reveiwTotalCount);
 
 		if (member != null) {
 			model.addAttribute("likeState", wishlistService.getLikeProduct(productId, member.getMemberId()));
