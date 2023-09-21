@@ -97,20 +97,15 @@ public class ProductController {
 		// 리뷰의 총 개수, 평균 별점, 상품별 리뷰 조회, 이미지 조회, 페이징바 (예라, 성능개선)
 	    ProductDetailPageDto reviewPageInfo = reviewService.findProductReviewAllAndCount(params, productId);
 	    model.addAttribute("reviewPageInfo", reviewPageInfo);
-	    
-	    log.debug("reviewPageInfo = {}", reviewPageInfo);
 
 	    long totalCount = reviewPageInfo.getTotalCount();
 	    int totalPages = (int) Math.ceil((double) totalCount / limit);
-	    log.debug("totalCount = {}", totalCount);
-	    log.debug("totalPages = {}", totalPages);
 	    model.addAttribute("totalPages", totalPages);
 
-		// 리뷰 평균 별점에 대한 퍼센트 구하기 (이혜령)
-		List<Review> allReviews = reviewService.findProductReviewAllNoPageBar(productId);
-
+	    List<ProductDetailPageDto> allReviews = reviewPageInfo.getReviews();
+		   
 		int[] starCounts = new int[6];
-		for (Review review : allReviews) {
+		for (ProductDetailPageDto review : allReviews) {
 			int star = review.getReviewStarRate();
 			starCounts[star]++;
 		}
@@ -136,51 +131,33 @@ public class ProductController {
 
 		// 상품 아이디로 상품정보 가져오기
 		List<ProductDetail> productDetails = productService.findAllProductDetailsByProductId(productId);
-
-		log.debug("productDetails = {}", productDetails);
+		ProductImages productImages = productService.findImageAttachmentsByProductId(productId);
 		
 		// 썸네일이미지와 상세이미지 분리
 		
-		List<ImageAttachment> allAttachments = new ArrayList<>();
-		
-		// productDetails 리스트의 각 항목에 대해 getAttachments() 호출
-		for (ProductDetail detail : productDetails) {
-		    List<ImageAttachment> attachmentsForDetail = detail.getAttachments();
-		    if (attachmentsForDetail != null) {
-		        allAttachments.addAll(attachmentsForDetail);
-		    }
-		}
-
-		// 썸네일이미지와 상세이미지 분리
+		List<ImageAttachment> attachments = productImages.getAttachments();
 		List<ImageAttachment> thumbnailImages = new ArrayList<>();
 		List<ImageAttachment> detailImages = new ArrayList<>();
-		for (ImageAttachment attach : allAttachments) {
-		    if (attach != null && attach.getImageOriginalFilename() != null) {
-		        if (attach.getThumbnail() == Thumbnail.Y) {
-		            thumbnailImages.add(attach);
-		        } else {
-		            detailImages.add(attach);
-		        }
-		    }
+		
+		// productDetails 리스트의 각 항목에 대해 getAttachments() 호출
+		for (ImageAttachment attach : attachments) {
+			if (attach != null && attach.getImageOriginalFilename() != null) {
+				if (attach.getThumbnail() == Thumbnail.Y) {
+					thumbnailImages.add(attach);
+				} else {
+					detailImages.add(attach);
+				}
+			}
 		}
 
-		log.debug("thumbnailImages = {}", thumbnailImages);
-		log.debug("detailImages = {}", detailImages);
-
-//		model.addAttribute("product", product);
 		model.addAttribute("thumbnailImages", thumbnailImages);
 		model.addAttribute("detailImages", detailImages); 
 		model.addAttribute("productDetails", productDetails); 
 		
 		// 상품 상세 페이지 리뷰 - 펫 정보 (예라, 성능개선)
 		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
-		log.debug("reviewPetsMap = {}", reviewPetsMap);
 		model.addAttribute("reviewPetsMap", reviewPetsMap); 
 		
-		// 상품 상세 페이지 리뷰 - 리뷰 전체개수 확인 (이혜령)
-		int reveiwTotalCount = reviewService.findReviewTotalCount(productId);
-		model.addAttribute("reviewTotalCount", reveiwTotalCount);
-
 		if (member != null) {
 			model.addAttribute("likeState", wishlistService.getLikeProduct(productId, member.getMemberId()));
 		}
