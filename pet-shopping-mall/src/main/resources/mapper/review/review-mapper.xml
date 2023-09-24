@@ -120,6 +120,7 @@
 	    r.*,
 	    ia.*,
 	    p.*,
+	    pe.*,
 	    (select count(*) from review where product_id = p.product_id) as review_count,
 	    (select round(avg(review_star_rate), 1) from review WHERE product_id = p.product_id) as avg_star_rate
 	from
@@ -130,6 +131,8 @@
 	    image_attachment ia on iam.image_id = ia.image_id
 	left join
 	    product p on p.product_id = r.product_id
+	left join
+    	pet pe on pe.pet_id = r.pet_id
 	where
 	    p.product_id = #{productId}
 	</select>

@@ -70,7 +70,7 @@
 					    <span>&nbsp;|&nbsp;</span>
 					</c:if>
                      <span><a href="#product-review-box">후기
-                           ${reviewTotalCount}건</a></span>
+                           ${reviewPageInfo.totalCount}건</a></span>
                   </div>
                </div>
                <hr class="hr-line" />
@@ -96,7 +96,7 @@
                   배송비 3,000원(30,000원이상 구매시 무료배송) <br /> 오후 1시 이전 주문 시 오늘 출발 <br />
                </div>
                <hr class="hr-line" />
-               <c:if test="${fn:length(productDetails) eq 1}">
+               <c:if test="${fn:length(reviewPageInfo.reviews) eq 1}">
                   <div class="purchase-cnt">
                      <div class="quantity-container">
                         <span>수량 </span>
@@ -108,13 +108,13 @@
                   <div class="additional-price-container"
                      id="additional-price-container" style="display: none;">
                      <div class="additional-price"
-                        id="${productDetails[0].productDetailId}">${productDetails[0].additionalPrice}</div>
+                        id="${reviewPageInfo.reviews[0].productDetailId}">${reviewPageInfo.reviews[0].additionalPrice}</div>
                   </div>
                </c:if>
-               <c:if test="${fn:length(productDetails) gt 1}">
+               <c:if test="${fn:length(reviewPageInfo.reviews) gt 1}">
                   <div>
                      <select name="product-option">
-                        <c:forEach items="${productDetails}" var="productDetail"
+                        <c:forEach items="${reviewPageInfo.reviews}" var="productDetail"
                            varStatus="vs">
                            <c:if test="${empty productDetail.optionName}">
                               <option class="options"
@@ -131,7 +131,7 @@
                   <!-- 옵션추가금 -->
                   <div class="additional-price-container"
                      id="additional-price-container" style="display: none;">
-                     <c:forEach items="${productDetails}" var="productDetail"
+                     <c:forEach items="${reviewPageInfo.reviews}" var="productDetail"
                         varStatus="vs">
                         <div class="additional-price"
                            id="${productDetail.productDetailId}">${productDetail.additionalPrice}</div>
@@ -291,24 +291,22 @@
                         </em>
                      </div>
                      <!-- 리뷰 펫 -->
-                     <c:set var="pets" value="${reviewPetsMap[review.reviewId]}" />
-                     <c:if test="${not empty pets}">
+                     <c:set var="pet" value="${review}" />
+                     <c:if test="${not empty pet.petName}">
                         <div class="reivew-pet-box">
                            <!-- 펫정보 -->
-                           <c:forEach items="${pets}" var="pet">
-	                              <em class="review-pet-name">${pet.petName} &nbsp;
-	                              <em class="review-em">|</em></em>
-	                              <em class="review-pet-gender">${pet.petGender} &nbsp;
-	                              <em class="review-em">|</em></em>
-	                              <em class="review-pet-age">${pet.petAge}살 &nbsp;
-	                              <em class="review-em">|</em></em>
-	                              <em class="review-pet-weight">${pet.petWeight}kg &nbsp;
-	                              <em class="review-em">|</em></em>
-	                              <em class="review-pet-breed">${pet.petBreed}</em>
-                           </c:forEach>
+                             <em class="review-pet-name">${pet.petName} &nbsp;
+                             <em class="review-em">|</em></em>
+                             <em class="review-pet-gender">${pet.petGender} &nbsp;
+                             <em class="review-em">|</em></em>
+                             <em class="review-pet-age">${pet.petAge}살 &nbsp;
+                             <em class="review-em">|</em></em>
+                             <em class="review-pet-weight">${pet.petWeight}kg &nbsp;
+                             <em class="review-em">|</em></em>
+                             <em class="review-pet-breed">${pet.petBreed}</em>
                         </div>
                      </c:if>
-					<c:if test="${empty pets}">
+					<c:if test="${empty pet.petName}">
 	                      <em class="review-pet-name">펫 정보가 등록되지 않은 회원입니다.</em>
                      </c:if>
                      <!-- 리뷰 별점 -->
@@ -453,7 +451,7 @@
 	</div>
    <form:form id="addCartFrm">
       <input type="hidden" value="1" id="_quantity" name="quantity">
-      <input type="hidden" value="${productDetails[0].productDetailId}"
+      <input type="hidden" value="${reviewPageInfo.reviews[0].productDetailId}"
          id="_productDetailId" name="productDetailId">
    </form:form>
 

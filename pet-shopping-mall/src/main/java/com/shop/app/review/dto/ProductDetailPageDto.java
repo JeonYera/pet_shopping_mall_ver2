@@ -24,27 +24,16 @@ public class ProductDetailPageDto {
 	
 	private int productId;
 	private String productName;
-	private int categoryId; // 1: 사료, 2: 간식, 3: 패션용품, 4: 산책용품, 5: 위생용품, 6: 고양이, 7: 기타용품
+	private int categoryId;
 	private int productPrice;
 	private int imageId;
 	private Timestamp createDate;
 	private int likeCnt;
 	
-	public Product toProduct() {
-		return Product.builder()
-				.productId(productId)
-				.productName(productName)
-				.categoryId(categoryId)
-				.createDate(createDate)
-				.likeCnt(likeCnt)
-				.build();
-	}
-	
 	private int productDetailId;
 	private String optionName;
 	private String optionValue;
 	private int additionalPrice;
-	
 	
 	private List<ProductDetailPageDto> reviews;
 	private int reviewId;
@@ -59,17 +48,6 @@ public class ProductDetailPageDto {
 	
 	public long getTotalCount() {
 		return totalCount;
-	}
-	
-	public Review toReview() {
-		return Review.builder()
-				.reviewId(reviewId)
-				.reviewMemberId(reviewMemberId)
-				.reviewTitle(reviewTitle)
-				.reviewContent(reviewContent)
-				.reviewStarRate(reviewStarRate)
-				.reviewCreatedAt(reviewCreatedAt)
-				.build();
 	}
 	
 	private int petId;

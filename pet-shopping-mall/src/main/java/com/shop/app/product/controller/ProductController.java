@@ -130,7 +130,6 @@ public class ProductController {
 		model.addAttribute("formattedPercentages", formattedPercentages);
 
 		// 상품 아이디로 상품정보 가져오기
-		List<ProductDetail> productDetails = productService.findAllProductDetailsByProductId(productId);
 		ProductImages productImages = productService.findImageAttachmentsByProductId(productId);
 		
 		// 썸네일이미지와 상세이미지 분리
@@ -152,11 +151,11 @@ public class ProductController {
 
 		model.addAttribute("thumbnailImages", thumbnailImages);
 		model.addAttribute("detailImages", detailImages); 
-		model.addAttribute("productDetails", productDetails); 
+//		model.addAttribute("productDetails", productDetails); 
 		
 		// 상품 상세 페이지 리뷰 - 펫 정보 (예라, 성능개선)
-		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
-		model.addAttribute("reviewPetsMap", reviewPetsMap); 
+//		Map<Integer, List<Pet>> reviewPetsMap = petService.findPetsMapByReviews(reviewPageInfo);
+//		model.addAttribute("reviewPetsMap", reviewPetsMap); 
 		
 		if (member != null) {
 			model.addAttribute("likeState", wishlistService.getLikeProduct(productId, member.getMemberId()));
